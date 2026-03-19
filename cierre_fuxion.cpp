@@ -96,7 +96,7 @@ double get_double_safe(bsoncxx::document::element el, double default_val = 0.0) 
 
 int main() {
     mc::instance inst{};
-    mc::client client{mc::uri{"mongodb://127.0.0.1:27017"}};
+    mc::client client{mc::uri{"mongodb://fuxion_admin:fuxion_password2026@127.0.0.1:27017/?authSource=admin"}};
     auto col = client["cierre_db"]["usuarios"];
 
     cout << CYN << "🚀 MOTOR FUXION PRO-LEV X — Iniciando Cierre (10M)..." << RST << endl;

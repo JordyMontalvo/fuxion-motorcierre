@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 async function sedFuxion() {
-    const uri = "mongodb://127.0.0.1:27017";
+    const uri = "mongodb://fuxion_admin:fuxion_password2026@127.0.0.1:27017/?authSource=admin";
     const client = new MongoClient(uri);
 
     try {

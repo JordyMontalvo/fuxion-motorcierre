@@ -97,11 +97,11 @@ int main() {
 
     // ══ Inicializar driver ════════════════════════════════════════════════════
     mc::instance inst{};
-    mc::client   client{ mc::uri{"mongodb://127.0.0.1:27017"} };
+    mc::client   client{ mc::uri{"mongodb://fuxion_admin:fuxion_password2026@127.0.0.1:27017/?authSource=admin"} };
     auto db  = client["cierre_db"];
     auto col = db["usuarios"];
 
-    logI("Conexion establecida: mongodb://127.0.0.1:27017");
+    logI("Conexion establecida: mongodb://fuxion_admin:fuxion_password2026@127.0.0.1:27017/?authSource=admin");
 
     // ══ FASE 0: Limpiar coleccion anterior ═══════════════════════════════════
     logH("FASE 0: Limpiar coleccion y crear indice");
