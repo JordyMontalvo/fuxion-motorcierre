@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fintech Cierre - 10M Usuarios</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Fuxion <span>Motor Cierre</span></h1>
+            <p class="subtitle">Simulación Realista de 10 Millones desde MongoDB</p>
+        </header>
+
+        <main>
+            <section class="controls">
+                <button id="runBtn" class="primary-btn">
+                    <span class="btn-icon">⚡</span>
+                    Ejecutar Pipeline
+                </button>
+                <div id="status" class="status-indicator">
+                    <span class="dot"></span>
+                    <span class="status-text">Listo para procesar</span>
+                </div>
+                <button id="exportBtn" class="secondary-btn">
+                    <span class="btn-icon">📸</span>
+                    Exportar Reporte
+                </button>
+            </section>
+
+            <section class="dashboard" id="dashboard">
+                <div class="kpi-grid">
+                    <div class="kpi-card glass">
+                        <h3>Total Usuarios</h3>
+                        <p id="totalUsers">-</p>
+                    </div>
+                    <div class="kpi-card glass">
+                        <h3>Tiempo Pipeline</h3>
+                        <p id="totalTime">-</p>
+                    </div>
+                    <div class="kpi-card glass">
+                        <h3>Residual Total</h3>
+                        <p id="totalResidual">-</p>
+                    </div>
+                    <div class="kpi-card glass">
+                        <h3>Promedio/Usuario</h3>
+                        <p id="avgResidual">-</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="card glass results-table-card">
+                        <h2>Estadísticas de Negocio</h2>
+                        <table id="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Cifra</th>
+                                    <th>Porcentaje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>📉 Deudores</td>
+                                    <td id="deudores">-</td>
+                                    <td id="deudoresPct">-</td>
+                                </tr>
+                                <tr>
+                                    <td>📈 Saldo a Favor</td>
+                                    <td id="favor">-</td>
+                                    <td id="favorPct">-</td>
+                                </tr>
+                                <tr>
+                                    <td>⚖️ Saldo Cero</td>
+                                    <td id="cero">-</td>
+                                    <td id="ceroPct">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card glass console-card">
+                        <div class="console-header">
+                            <h2>C++ Process Console</h2>
+                            <button id="clearConsole" class="icon-btn">🗑️</button>
+                        </div>
+                        <div id="console" class="console-output JetBrains-Mono">
+                            <span class="system-msg">Esperando inicio de proceso...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Powered by C++ Supercomputing & Node.js Bridge</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
