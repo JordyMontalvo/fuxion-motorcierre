@@ -42,6 +42,10 @@ git pull origin master
 echo "⚙️ Compilando Motor de Cierre C++ (Postgres Edition)..."
 g++ -std=c++17 cierre_postgres.cpp -o cierre_postgres -I/usr/include/postgresql -lpq
 
+echo "🐘 Aplicando Esquema de Base de Datos y Poblado..."
+psql -d fuxion_db -f schema_fuxion.sql
+node populate_pg.js
+
 # 7. Despliegue con PM2
 echo "🛰️ Lanzando Servicios con PM2..."
 sudo npm install -g pm2
