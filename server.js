@@ -27,11 +27,14 @@ app.get('/api/tree', async (req, res) => {
 app.get('/api/stats', async (req, res) => {
     try {
         const countsResult = await pool.query('SELECT rank_id, COUNT(*) as count FROM users GROUP BY rank_id');
-        const dv4Result = await pool.query('SELECT SUM(dv4) as total FROM closing_results WHERE period_id = 1');
+        const dv4Result = await pool.query('SELECT SUM(dv4) as total, COUNT(*) as num_users FROM closing_results WHERE period_id = 1');
+        const avgPv4Result = await pool.query('SELECT AVG(qv) as avg_pv4 FROM orders WHERE period_id = 1');
         
         const stats = {
             debtors: 267,
+            totalUsers: dv4Result.rows[0].num_users || 10000,
             totalDv4: dv4Result.rows[0].total || 0,
+            avgPv4: avgPv4Result.rows[0].avg_pv4 || 0,
             entrepreneur: 0, executive: 0, senior: 0,
             team: 0, seniorTeam: 0, leader: 0,
             premier: 0, elite: 0, diamond: 0, blueDiamond: 38
