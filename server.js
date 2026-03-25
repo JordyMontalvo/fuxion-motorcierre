@@ -29,12 +29,9 @@ app.get('/api/stats', async (req, res) => {
         const countsResult = await pool.query('SELECT rank_id, COUNT(*) as count FROM users GROUP BY rank_id');
         const stats = {
             debtors: 267,
-            entrepreneur: 0,
-            executive: 0,
-            senior: 0,
-            team: 0,
-            leader: 0,
-            diamond: 38
+            entrepreneur: 0, executive: 0, senior: 0,
+            team: 0, seniorTeam: 0, leader: 0,
+            premier: 0, elite: 0, diamond: 0, blueDiamond: 38
         };
 
         countsResult.rows.forEach(row => {
@@ -45,7 +42,12 @@ app.get('/api/stats', async (req, res) => {
             else if (rankId === 2) stats.executive = count;
             else if (rankId === 3) stats.senior = count;
             else if (rankId === 4) stats.team = count;
-            else if (rankId >= 5) stats.leader += count;
+            else if (rankId === 5) stats.seniorTeam = count;
+            else if (rankId === 6) stats.leader = count;
+            else if (rankId === 7) stats.premier = count;
+            else if (rankId === 8) stats.elite = count;
+            else if (rankId === 9) stats.diamond = count;
+            else if (rankId >= 10) stats.blueDiamond += count;
         });
 
         res.json(stats);

@@ -86,13 +86,19 @@ int main() {
     
     int rows = PQntuples(res_stats);
     for (int i = 0; i < rows; i++) {
-        std::string rank_name = "Rank " + std::string(PQgetvalue(res_stats, i, 0));
         int r_id = std::stoi(PQgetvalue(res_stats, i, 0));
-        if (r_id == 1) rank_name = "Entrepreneur         ";
-        if (r_id == 2) rank_name = "Executive Entrepreneur";
-        if (r_id == 3) rank_name = "Senior Entrepreneur   ";
-        if (r_id == 4) rank_name = "Team Builder          ";
-        if (r_id == 5) rank_name = "Leader X              ";
+        std::string rank_name = "Rank " + std::to_string(r_id);
+        
+        if (r_id == 1) rank_name = "Entrepreneur           ";
+        else if (r_id == 2) rank_name = "Executive Entrepreneur ";
+        else if (r_id == 3) rank_name = "Senior Entrepreneur    ";
+        else if (r_id == 4) rank_name = "Team Builder           ";
+        else if (r_id == 5) rank_name = "Senior Team Builder    ";
+        else if (r_id == 6) rank_name = "Leader X               ";
+        else if (r_id == 7) rank_name = "Premier Leader         ";
+        else if (r_id == 8) rank_name = "Elite Leader           ";
+        else if (r_id == 9) rank_name = "Diamond                ";
+        else if (r_id >= 10) rank_name = "Blue Diamond         ";
         
         std::cout << " " << rank_name << " : \033[1;33m" << PQgetvalue(res_stats, i, 1) << "\033[0m\n";
     }

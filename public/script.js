@@ -31,8 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('count-exec').textContent = data.executive.toLocaleString();
             document.getElementById('count-senior').textContent = data.senior.toLocaleString();
             document.getElementById('count-team').textContent = data.team.toLocaleString();
+            document.getElementById('count-senior-team').textContent = data.seniorTeam.toLocaleString();
             document.getElementById('count-leader').textContent = data.leader.toLocaleString();
-            document.getElementById('count-diamond').textContent = data.diamond;
+            document.getElementById('count-premier').textContent = data.premier.toLocaleString();
+            document.getElementById('count-elite').textContent = data.elite.toLocaleString();
+            document.getElementById('count-diamond-real').textContent = data.diamond.toLocaleString();
+            document.getElementById('count-blue-diamond').textContent = data.blueDiamond.toLocaleString();
         } catch (err) {
             console.error("Error fetching stats:", err);
         }
