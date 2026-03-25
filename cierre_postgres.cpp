@@ -76,6 +76,10 @@ int main() {
     PQexec(conn, "UPDATE closing_results SET rank_id = 3 WHERE dv4 > 5000;");
     PQexec(conn, "UPDATE closing_results SET rank_id = 4 WHERE dv4 > 15000;");
     PQexec(conn, "UPDATE closing_results SET rank_id = 5 WHERE dv4 > 54000;");
+    
+    // SINCRONIZAR RANGOS A TABLA USERS PARA EL DASHBOARD
+    PQexec(conn, "UPDATE users u SET rank_id = cr.rank_id FROM closing_results cr WHERE u.id = cr.user_id AND cr.period_id = 1;");
+    
     auto t6 = Clock::now();
     std::cout << "\033[1;32mOK\033[0m (" << std::chrono::duration<double, std::milli>(t6 - t5).count() << "ms)\n";
 

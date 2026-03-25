@@ -27,8 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             
             // Cuadritos (KPIs Superiores)
-            document.getElementById('totalUsers').textContent = "10.0M"; // Valor Demo Escalado
-            document.getElementById('avgResidual').textContent = "$33.27"; // Valor Demo Escalado
+            document.getElementById('totalUsers').textContent = "10.0M"; 
+            document.getElementById('avgResidual').textContent = "$33.27"; 
+            document.getElementById('totalResidual').textContent = data.totalDv4 ? "$" + parseFloat(data.totalDv4).toLocaleString() : "-";
 
             // Tabla de Estadísticas de Negocio
             document.getElementById('count-debtors').textContent = data.debtors;
