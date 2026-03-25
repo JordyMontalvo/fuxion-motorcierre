@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/stats');
             const data = await res.json();
             
+            // Cuadritos (KPIs Superiores)
+            document.getElementById('totalUsers').textContent = "10.0M"; // Valor Demo Escalado
+            document.getElementById('avgResidual').textContent = "$33.27"; // Valor Demo Escalado
+
+            // Tabla de Estadísticas de Negocio
             document.getElementById('count-debtors').textContent = data.debtors;
             document.getElementById('count-entre').textContent = data.entrepreneur.toLocaleString();
             document.getElementById('count-exec').textContent = data.executive.toLocaleString();
@@ -58,24 +63,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.type === 'log') {
                 const line = document.createElement('div');
                 line.textContent = data.message;
-                if (data.message.includes('OK') || data.message.includes('éxito')) line.style.color = '#00f2ff';
+                if (data.message.includes('OK') || data.message.includes('éxito') || data.message.includes('COMPLETADO')) {
+                    line.style.color = '#00f2ff';
+                }
                 consoleOutput.appendChild(line);
                 consoleOutput.scrollTop = consoleOutput.scrollHeight;
 
-                // Update KPIs qualitatively for demo
+                // Extraer KPIs de los logs
+                if (data.message.includes('COMPLETADO EN')) {
+                   const time = data.message.split('EN')[1].trim();
+                   document.getElementById('totalTime').textContent = time;
+                }
                 if (data.message.includes('DV4 Total')) {
                     document.getElementById('totalResidual').textContent = data.message.split('$')[1];
-                }
-                if (data.message.includes('completado en')) {
-                    document.getElementById('totalTime').textContent = data.message.split('en')[1].trim();
                 }
             }
 
             if (data.type === 'done') {
                 eventSource.close();
                 runBtn.disabled = false;
+                updateStats(); // Refrescar tabla de rangos al terminar
                 const doneMsg = document.createElement('div');
-                doneMsg.innerHTML = '<br><span class="success-msg">Cierre Completado en Postgres.</span>';
+                doneMsg.innerHTML = '<br><span class="success-msg">✅ Proceso finalizado con éxito.</span>';
                 consoleOutput.appendChild(doneMsg);
             }
         };
