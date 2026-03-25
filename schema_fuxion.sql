@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100),
     path ltree, -- Ruta completa en el árbol: '1.44.506'
     level INTEGER, -- Profundidad en el árbol
-    rank_id VARCHAR(50) DEFAULT 'Entrepreneur'
+    rank_id INT DEFAULT 1 -- 1: Entrepreneur, 2: Executive, etc.
 );
 
 -- Tabla de Compras/Transacciones Reales (QV)
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS orders (
     qv NUMERIC(10, 2) NOT NULL, -- Puntos de Calificación
     cv NUMERIC(10, 2) NOT NULL, -- Puntos Comisionables
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    period_id INTEGER REFERENCES periods(id)
+    period_id INTEGER DEFAULT 1
 );
 
 -- Tabla de Actividad Agregada (PV4)
