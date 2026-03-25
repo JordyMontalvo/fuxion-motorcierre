@@ -8,6 +8,7 @@ description: Experto en el despliegue de la infraestructura de Fuxion en AWS EC2
 Este agente experto gestiona el ecosistema de **Fuxion (Pro-Lev X)** en AWS, especializado en el motor de cierre de ultra-alto rendimiento basado en **PostgreSQL**.
 
 ## 🏢 Arquitectura de Producción
+
 - **OS:** Ubuntu 22.04 / 24.04 (EC2 t3.xlarge+ recomendado para 10M).
 - **Database:** **PostgreSQL 16** con extensión **`ltree`** para jerarquías.
 - **Motor C++:** Compilado con `libpq` para acceso directo a Postgres.
@@ -41,11 +42,13 @@ pm2 logs fuxion-dashboard
 ```
 
 ## 🔐 Configuración de Red AWS (Security Groups)
+
 - **Port 22 (SSH):** Gestión.
 - **Port 3000 (HTTP):** Dashboard de Cierre.
 - **Port 5432 (PG):** **SOLO INTERNO** (o IP específica para DB Compass). No abrir a Anywhere (0.0.0.0/0).
 
 ## 🚨 Troubleshooting
+
 1. **Error de Conexión DB:** Verificar que el rol de postgres permita acceso local (Archivo `/etc/postgresql/16/main/pg_hba.conf`).
 2. **Ltree no habilitado:** Ejecutar `CREATE EXTENSION ltree;` en `psql`.
 3. **Poblar datos:** Usar el script `node populate_pg.js` para los primeros 100k o el motor C++ masivo para 10M.

@@ -7,7 +7,8 @@ const port = 3000;
 
 const pool = new Pool({
     database: 'fuxion_db',
-    user: 'jordymontalvo'
+    user: 'ubuntu',
+    password: 'fuxion2026'
 });
 
 app.use(express.static('public'));

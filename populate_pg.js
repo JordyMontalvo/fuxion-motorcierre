@@ -2,7 +2,9 @@ const { Client } = require('pg');
 
 async function seed() {
     const client = new Client({
-        database: 'fuxion_db'
+        database: 'fuxion_db',
+        user: 'ubuntu',
+        password: 'fuxion2026'
     });
 
     await client.connect();

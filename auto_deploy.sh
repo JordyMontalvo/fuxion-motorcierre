@@ -2,8 +2,8 @@
 # Auto-deploy script: PostgreSQL + Ltree Edition
 # Este script es ejecutado por el cron o el webhook y actualiza el motor.
 
-REPO_DIR="$HOME/fuxion-motorcierre"
-LOG="$HOME/auto_deploy.log"
+REPO_DIR="/home/ubuntu/fuxion-repo"
+LOG="/home/ubuntu/auto_deploy.log"
 
 cd "$REPO_DIR" || exit 1
 
