@@ -27,6 +27,7 @@ async function seed() {
     for (let i = 2; i <= totalUsers; i += 100) {
         let valuesUsers = [];
         let valuesActivity = [];
+        let valuesOrders = [];
         const end = Math.min(i + 100, totalUsers + 1);
 
         for (let j = i; j < end; j++) {
@@ -38,10 +39,14 @@ async function seed() {
 
             valuesUsers.push(`(${j}, 'User ${j}', ${sponsorId}, '${myPath}', ${myLevel})`);
             valuesActivity.push(`(${j}, ${(Math.random() * 500).toFixed(2)}, 1)`);
+            
+            // Seemos órdenes (pedidos) para que el motor tenga qué calcular
+            const qv = (Math.random() * 800).toFixed(2);
+            valuesOrders.push(`(${j}, ${qv}, ${qv * 0.8}, 1)`);
         }
 
         await client.query(`INSERT INTO users (id, name, sponsor_id, path, level) VALUES ${valuesUsers.join(',')}`);
-        await client.query(`INSERT INTO activity (user_id, pv4, period_id) VALUES ${valuesActivity.join(',')}`);
+        await client.query(`INSERT INTO orders (user_id, qv, cv, period_id) VALUES ${valuesOrders.join(',')}`);
 
         if (i % 2000 === 0) console.log(`Inserted ${i} users...`);
     }
