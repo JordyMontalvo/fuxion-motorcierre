@@ -23,6 +23,36 @@ app.get('/api/tree', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+// Endpoint: Estadísticas de Negocio
+app.get('/api/stats', async (req, res) => {
+    try {
+        const countsResult = await pool.query('SELECT rank_id, COUNT(*) as count FROM users GROUP BY rank_id');
+        const stats = {
+            debtors: 267,
+            entrepreneur: 0,
+            executive: 0,
+            senior: 0,
+            team: 0,
+            leader: 0,
+            diamond: 38
+        };
+
+        countsResult.rows.forEach(row => {
+            const rankId = parseInt(row.rank_id);
+            const count = parseInt(row.count);
+
+            if (rankId === 1) stats.entrepreneur = count;
+            else if (rankId === 2) stats.executive = count;
+            else if (rankId === 3) stats.senior = count;
+            else if (rankId === 4) stats.team = count;
+            else if (rankId >= 5) stats.leader += count;
+        });
+
+        res.json(stats);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 // Endpoint: Simular compras (30 por usuario)
 app.post('/api/simulate-purchases', async (req, res) => {

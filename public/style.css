@@ -195,12 +195,75 @@ header h1 span {
     color: white;
 }
 
+/* Grid and Tables */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.stats-card {
+    padding: 1.5rem;
+}
+
+.card-header h2 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.business-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.business-table th {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+.business-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+}
+
+.business-table tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.business-table td:nth-child(2) {
+    font-weight: 700;
+    color: white;
+    text-align: right;
+}
+
+.business-table td:nth-child(3) {
+    color: var(--text-dim);
+    text-align: right;
+    font-size: 0.8rem;
+}
+
 /* Console */
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .console-output {
     background: rgba(0, 0, 0, 0.6);
     border-radius: 15px;
     padding: 1.5rem;
-    height: 450px;
+    height: 400px;
     overflow-y: auto;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;

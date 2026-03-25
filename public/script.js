@@ -17,9 +17,29 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('active');
             document.getElementById(tabId).classList.add('active');
 
-            if (tabId === 'tree-view') renderTree();
+            if (tabId === 'dashboard') updateStats();
         });
     });
+
+    async function updateStats() {
+        try {
+            const res = await fetch('/api/stats');
+            const data = await res.json();
+            
+            document.getElementById('count-debtors').textContent = data.debtors;
+            document.getElementById('count-entre').textContent = data.entrepreneur.toLocaleString();
+            document.getElementById('count-exec').textContent = data.executive.toLocaleString();
+            document.getElementById('count-senior').textContent = data.senior.toLocaleString();
+            document.getElementById('count-team').textContent = data.team.toLocaleString();
+            document.getElementById('count-leader').textContent = data.leader.toLocaleString();
+            document.getElementById('count-diamond').textContent = data.diamond;
+        } catch (err) {
+            console.error("Error fetching stats:", err);
+        }
+    }
+
+    // Initial load
+    updateStats();
 
     // --- C++ Execution (Benchmark) ---
     runBtn.addEventListener('click', () => {
