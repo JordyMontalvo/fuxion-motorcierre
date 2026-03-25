@@ -10,7 +10,11 @@ async function seed() {
     await client.connect();
     console.log("Connected to fuxion_db. Seeding 10,000 users...");
 
+    // Insertar Periodo 1 para satisfacer la FK
+    await client.query("INSERT INTO periods (id, name) VALUES (1, 'Periodo Demo 1') ON CONFLICT DO NOTHING");
+
     await client.query('TRUNCATE TABLE activity CASCADE');
+    await client.query('TRUNCATE TABLE orders CASCADE');
     await client.query('TRUNCATE TABLE users CASCADE');
 
     const totalUsers = 10000;
