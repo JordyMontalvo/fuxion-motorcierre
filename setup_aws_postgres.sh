@@ -32,7 +32,13 @@ if ! command -v node &> /dev/null; then
     sudo apt-get install -y nodejs
 fi
 
-# 6. Compilación del Motor C++ Postgres
+# 6. Sincronización de Código y Compilación
+REPO_DIR="/home/ubuntu/fuxion-repo"
+echo "⚙️ Sincronizando repositorio en $REPO_DIR..."
+cd $REPO_DIR || exit 1
+git checkout master
+git pull origin master
+
 echo "⚙️ Compilando Motor de Cierre C++ (Postgres Edition)..."
 g++ -std=c++17 cierre_postgres.cpp -o cierre_postgres -I/usr/include/postgresql -lpq
 
@@ -40,7 +46,7 @@ g++ -std=c++17 cierre_postgres.cpp -o cierre_postgres -I/usr/include/postgresql 
 echo "🛰️ Lanzando Servicios con PM2..."
 sudo npm install -g pm2
 pm2 delete fuxion-dashboard 2>/dev/null || true
-npm install
+npm install --silent
 pm2 start server.js --name fuxion-dashboard
 pm2 save
 
