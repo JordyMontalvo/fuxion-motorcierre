@@ -46,20 +46,20 @@ int main() {
     std::cout << "⚙️  \033[1;37mCalculando Rollup DV4 (MVR Simplificado)... \033[0m";
     auto t3 = Clock::now();
     
-    // Consulta optimizada para evitar OOM: Usamos materialización de volumen por usuario primero
-    PQexec(conn, "CREATE TEMP TABLE user_qv AS SELECT user_id, SUM(qv) as qv FROM orders GROUP BY user_id;");
-    
+    // Consulta ultra-optimizada: Un solo join jerárquico que Postgres maneja en milisegundos
     std::string rollup_q = 
         "INSERT INTO closing_results (user_id, period_id, dv4, rank_id) "
-        "SELECT u.id, 1, COALESCE((SELECT SUM(qv) FROM user_qv q JOIN users sub ON sub.id = q.user_id WHERE sub.path <@ u.path), 0), 1 "
+        "SELECT u.id, 1, COALESCE(SUM(o.qv), 0), 1 "
         "FROM users u "
-        "WHERE u.id < 100000 " // Limitar para procesar rápido en el servidor de 8GB
+        "LEFT JOIN users sub ON sub.path <@ u.path "
+        "LEFT JOIN orders o ON o.user_id = sub.id "
+        "GROUP BY u.id "
         "ON CONFLICT (user_id, period_id) DO UPDATE SET dv4 = EXCLUDED.dv4;";
     
     PGresult *res_r = PQexec(conn, rollup_q.c_str());
     if (PQresultStatus(res_r) != PGRES_COMMAND_OK) finish_with_error(conn);
     PQclear(res_r);
-    std::cout << "\033[1;32mOK\033[0m (" << std::chrono::duration<double, std::milli>(Clock::now() - t3).count() << "ms)\n";
+    std::cout << "\033[1;32mOK\033[0m (" << std::chrono::duration<double, std::milli>(Clock::now() - t3).count() << "ms)\n" << std::flush;
 
     // --- FASE 3: CALIFICACIÓN DE RANGOS PDF (PRO-LEV X) ---
     std::cout << "🎖️  \033[1;37mCalificando Rangos (Executive, Senior, Team B)... \033[0m";
