@@ -20,84 +20,82 @@
         </header>
 
         <main>
-            <section class="controls">
-                <button id="runBtn" class="primary-btn">
-                    <span class="btn-icon">⚡</span>
-                    Ejecutar Pipeline
-                </button>
-                <div id="status" class="status-indicator">
-                    <span class="dot"></span>
-                    <span class="status-text">Listo para procesar</span>
-                </div>
-                <button id="exportBtn" class="secondary-btn">
-                    <span class="btn-icon">📸</span>
-                    Exportar Reporte
-                </button>
-            </section>
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+                <button class="tab-btn" data-tab="tree-view">Jerarquía (Tree)</button>
+                <button class="tab-btn" data-tab="simulation">Simulación (Pedidos)</button>
+            </nav>
 
-            <section class="dashboard" id="dashboard">
+            <section class="tab-content active" id="dashboard">
+                <section class="controls">
+                    <button id="runBtn" class="primary-btn">
+                        <span class="btn-icon">⚡</span>
+                        Ejecutar Cierre Postgres
+                    </button>
+                    <div id="status" class="status-indicator">
+                        <span class="dot"></span>
+                        <span class="status-text">Listo (Postgres)</span>
+                    </div>
+                </section>
+
                 <div class="kpi-grid">
                     <div class="kpi-card glass">
                         <h3>Total Usuarios</h3>
-                        <p id="totalUsers">-</p>
+                        <p id="totalUsers">10,000</p>
                     </div>
                     <div class="kpi-card glass">
-                        <h3>Tiempo Pipeline</h3>
+                        <h3>Tiempo Cierre</h3>
                         <p id="totalTime">-</p>
                     </div>
                     <div class="kpi-card glass">
-                        <h3>Residual Total</h3>
+                        <h3>DV4 Global</h3>
                         <p id="totalResidual">-</p>
                     </div>
                     <div class="kpi-card glass">
-                        <h3>Promedio/Usuario</h3>
+                        <h3>Promedio PV4</h3>
                         <p id="avgResidual">-</p>
                     </div>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="card glass results-table-card">
-                        <h2>Estadísticas de Negocio</h2>
-                        <table id="resultsTable">
-                            <thead>
-                                <tr>
-                                    <th>Concepto</th>
-                                    <th>Cifra</th>
-                                    <th>Porcentaje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>📉 Deudores</td>
-                                    <td id="deudores">-</td>
-                                    <td id="deudoresPct">-</td>
-                                </tr>
-                                <tr>
-                                    <td>📈 Saldo a Favor</td>
-                                    <td id="favor">-</td>
-                                    <td id="favorPct">-</td>
-                                </tr>
-                                <tr>
-                                    <td>⚖️ Saldo Cero</td>
-                                    <td id="cero">-</td>
-                                    <td id="ceroPct">-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
                     <div class="card glass console-card">
                         <div class="console-header">
-                            <h2>C++ Process Console</h2>
+                            <h2>C++ PostgreSQL Console</h2>
                             <button id="clearConsole" class="icon-btn">🗑️</button>
                         </div>
                         <div id="console" class="console-output JetBrains-Mono">
-                            <span class="system-msg">Esperando inicio de proceso...</span>
+                            <span class="system-msg">Motor C++ Postgres listo...</span>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <section class="tab-content" id="tree-view">
+                <div class="card glass tree-card">
+                    <div class="tree-controls">
+                        <h2>Visualizador de Organización</h2>
+                        <button id="refreshTree" class="secondary-btn">Actualizar Árbol</button>
+                    </div>
+                    <div id="tree-container"></div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="simulation">
+                <div class="card glass simulation-card">
+                    <h2>Simulación Realista de Compras</h2>
+                    <p>Genera 15-30 compras por usuario para calcular PV4/DV4 basado en transacciones reales.</p>
+                    <div class="sim-actions">
+                        <button id="seedPurchasesBtn" class="primary-btn">
+                            <span class="btn-icon">📦</span>
+                            Generar 15k Compras
+                        </button>
+                        <div id="sim-status"></div>
+                    </div>
+                </div>
+            </section>
         </main>
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
 
         <footer>
             <p>Powered by C++ Supercomputing & Node.js Bridge</p>
