@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fintech Cierre - 10M Usuarios</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Fuxion <span>Motor Cierre</span></h1>
+            <p class="subtitle"> Supercomputación Fuxion — 10 Millones de Usuarios en AWS</p>
+        </header>
+
+        <main>
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+                <button class="tab-btn" data-tab="tree-view">Jerarquía (Tree)</button>
+                <button class="tab-btn" data-tab="simulation">Simulación (Pedidos)</button>
+            </nav>
+
+            <section class="tab-content active" id="dashboard">
+                <section class="controls">
+                    <button id="runBtn" class="primary-btn">
+                        <span class="btn-icon">⚡</span>
+                        Ejecutar Cierre Postgres
+                    </button>
+                    <div id="status" class="status-indicator">
+                        <span class="dot"></span>
+                        <span class="status-text">Listo (Postgres)</span>
+                    </div>
+                </section>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card glass">
+                        <h3>Total Usuarios</h3>
+                        <p id="totalUsers">10,000,000</p>
+                    </div>
+                    <div class="kpi-card glass">
+                        <h3>Tiempo Cierre</h3>
+                        <p id="totalTime">-</p>
+                    </div>
+                    <div class="kpi-card glass">
+                        <h3>DV4 Global</h3>
+                        <p id="totalResidual">-</p>
+                    </div>
+                    <div class="kpi-card glass">
+                        <h3>Promedio PV4</h3>
+                        <p id="avgResidual">-</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <!-- Nueva Tabla de Estadísticas Detalladas -->
+                    <div class="card glass stats-card">
+                        <div class="card-header">
+                            <h2>Estadísticas de Negocio</h2>
+                        </div>
+                        <table class="business-table">
+                            <thead>
+                                <tr>
+                                    <th>CONCEPTO</th>
+                                    <th>CIFRA</th>
+                                    <th>PORCENTAJE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>🛡️ Deudores</td><td id="count-debtors">267</td><td>(Alto)</td></tr>
+                                <tr><td>📈 Saldo a Favor</td><td>--</td><td>--</td></tr>
+                                <tr><td>🏆 Entrepreneur</td><td id="count-entre">--</td><td>--</td></tr>
+                                <tr><td>🏆 Executive Ent.</td><td id="count-exec">--</td><td>--</td></tr>
+                                <tr><td>🏆 Senior Ent.</td><td id="count-senior">--</td><td>--</td></tr>
+                                <tr><td>🏆 Team Builder</td><td id="count-team">--</td><td>--</td></tr>
+                                <tr><td>🏆 Senior Team B.</td><td id="count-senior-team">--</td><td>--</td></tr>
+                                <tr><td>💎 Leader X</td><td id="count-leader">--</td><td>--</td></tr>
+                                <tr><td>💎 Premier Leader</td><td id="count-premier">--</td><td>--</td></tr>
+                                <tr><td>💎 Elite Leader</td><td id="count-elite">--</td><td>--</td></tr>
+                                <tr><td>💎 Diamond</td><td id="count-diamond-real">--</td><td>--</td></tr>
+                                <tr><td>💎 Blue Diamond</td><td id="count-blue-diamond">--</td><td>--</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card glass console-card">
+                        <div class="console-header">
+                            <h2>C++ PostgreSQL Console</h2>
+                            <button id="clearConsole" class="icon-btn">🗑️</button>
+                        </div>
+                        <div id="console" class="console-output JetBrains-Mono">
+                            <span class="system-msg">Motor C++ Postgres listo...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="tree-view">
+                <div class="card glass tree-card">
+                    <div class="tree-controls">
+                        <h2>Visualizador de Organización</h2>
+                        <button id="refreshTree" class="secondary-btn">Actualizar Árbol</button>
+                    </div>
+                    <div id="tree-container"></div>
+                </div>
+            </section>
+
+            <section class="tab-content" id="simulation">
+                <div class="card glass simulation-card">
+                    <h2>Simulación Realista de Compras</h2>
+                    <p>Genera 15-30 compras por usuario para calcular PV4/DV4 basado en transacciones reales.</p>
+                    <div class="sim-actions">
+                        <button id="seedPurchasesBtn" class="primary-btn">
+                            <span class="btn-icon">📦</span>
+                            Generar 500k Compras (100k usuarios)
+                        </button>
+                        <div id="sim-status"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <footer>
+            <p>Powered by C++ Supercomputing & Node.js Bridge</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

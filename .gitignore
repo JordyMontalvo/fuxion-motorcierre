@@ -1,0 +1,23 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.env
+
+# C++ Binaries
+benchmark_sum
+binary_tree_benchmark
+cierre_fuxion
+cierre_mongo
+cierre_realista
+mongo_benchmark
+*.o
+*.out
+*.exe
+*.dSYM/
+
+# OS Specific
+.DS_Store
+Thumbs.db
