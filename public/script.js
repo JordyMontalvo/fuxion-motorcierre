@@ -31,18 +31,28 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('avgResidual').textContent = data.avgPv4 > 0 ? "$" + parseFloat(data.avgPv4).toFixed(2) : "-";
             document.getElementById('totalResidual').textContent = data.totalDv4 > 0 ? "$" + parseFloat(data.totalDv4).toLocaleString() : "-";
 
-            // Tabla de Estadísticas de Negocio
-            document.getElementById('count-debtors').textContent = data.debtors;
-            document.getElementById('count-entre').textContent = data.entrepreneur.toLocaleString();
-            document.getElementById('count-exec').textContent = data.executive.toLocaleString();
-            document.getElementById('count-senior').textContent = data.senior.toLocaleString();
-            document.getElementById('count-team').textContent = data.team.toLocaleString();
-            document.getElementById('count-senior-team').textContent = data.seniorTeam.toLocaleString();
-            document.getElementById('count-leader').textContent = data.leader.toLocaleString();
-            document.getElementById('count-premier').textContent = data.premier.toLocaleString();
-            document.getElementById('count-elite').textContent = data.elite.toLocaleString();
-            document.getElementById('count-diamond-real').textContent = data.diamond.toLocaleString();
-            document.getElementById('count-blue-diamond').textContent = data.blueDiamond.toLocaleString();
+            const total = data.totalUsers || 1;
+            const updateRow = (id, count) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.textContent = count.toLocaleString();
+                    const pctEl = el.nextElementSibling;
+                    if (pctEl) pctEl.textContent = ((count / total) * 100).toFixed(2) + "%";
+                }
+            };
+
+            // Tabla de Estadísticas de Negocio con Porcentajes
+            updateRow('count-debtors', data.debtors);
+            updateRow('count-entre', data.entrepreneur);
+            updateRow('count-exec', data.executive);
+            updateRow('count-senior', data.senior);
+            updateRow('count-team', data.team);
+            updateRow('count-senior-team', data.seniorTeam);
+            updateRow('count-leader', data.leader);
+            updateRow('count-premier', data.premier);
+            updateRow('count-elite', data.elite);
+            updateRow('count-diamond-real', data.diamond);
+            updateRow('count-blue-diamond', data.blueDiamond);
         } catch (err) {
             console.error("Error fetching stats:", err);
         }
