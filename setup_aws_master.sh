@@ -28,10 +28,10 @@ echo "🛠️ Compilando Motor de Cierre C++ (Postgres Native)..."
 cd ~/fuxion-motorcierre || cd .
 g++ -std=c++17 cierre_postgres.cpp -o cierre_postgres -I/usr/include/postgresql -lpq
 
-# 6. Aplicar Schema y Poblar 10 Millones de Usuarios (Postgres es más rápido)
-echo "🔥 Cargando 10,000,000 de usuarios con ltree..."
+# 6. Aplicar Schema y Poblar 1 Millón de Usuarios (Balanceado para 8GB EBS)
+echo "🔥 Cargando 1,000,000 de usuarios con ltree..."
 psql -d fuxion_db -f schema_fuxion.sql
-psql -d fuxion_db -f populate_10m.sql
+psql -d fuxion_db -f populate_1m.sql
 
 # 7. Configuración de PM2 para Dashboard
 echo "🛰️ Lanzando Dashboard con PM2..."
