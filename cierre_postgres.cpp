@@ -26,7 +26,8 @@ const std::vector<RankRules> RULES = {
     {6, "Leader X",           200, 6000,  3600},
     {7, "Premier Leader",     200, 15000, 9000},
     {8, "Elite Leader",       200, 30000, 18000},
-    {9, "Diamond",            200, 60000, 30000}
+    {9, "Diamond",            200, 60000, 30000},
+    {10, "Blue Diamond",      200, 100000, 50000}
 };
 
 void finish_with_error(PGconn *conn) {
@@ -36,23 +37,20 @@ void finish_with_error(PGconn *conn) {
 }
 
 int main() {
-    const char *conninfo = "dbname=fuxion_db user=ubuntu password=fuxion2026";
+    // Conexión robusta vía localhost para AWS
+    const char *conninfo = "host=localhost dbname=fuxion_db user=ubuntu password=fuxion2026";
     PGconn *conn = PQconnectdb(conninfo);
 
     if (PQstatus(conn) != CONNECTION_OK) {
-        conninfo = "dbname=fuxion_db user=jordymontalvo";
-        conn = PQconnectdb(conninfo);
-        if (PQstatus(conn) != CONNECTION_OK) {
-            std::cerr << "Conexión fallida: " << PQerrorMessage(conn) << std::endl;
-            PQfinish(conn);
-            return 1;
-        }
+        std::cerr << "Conexión fallida: " << PQerrorMessage(conn) << std::endl;
+        PQfinish(conn);
+        return 1;
     }
 
     auto start_total = Clock::now();
 
     std::cout << "\033[1;36m╔═══════════════════════════════════════════════════════════╗\n"
-              << "║      MOTOR FUXION PRO-LEV-X — POSTGRESQL ENGINE (v2)      ║\n"
+              << "║      MOTOR FUXION PRO-LEV-X — POSTGRESQL ENGINE (v2.1)    ║\n"
               << "╚═══════════════════════════════════════════════════════════╝\033[0m\n\n";
 
     // --- FASE 1: LIMPIEZA Y PREPARACIÓN ---
@@ -74,7 +72,6 @@ int main() {
     // --- FASE 3: VOLUMEN GRUPAL (DV4) CON LTREE ---
     std::cout << "⚙️  \033[1;37mCalculando Rollup DV4 (Sin MVR)... \033[0m";
     auto t3 = Clock::now();
-    // Aquí usamos la ventaja de ltree para un rollup masivo
     std::string dv_q = 
         "UPDATE closing_results cr SET dv4 = sub.total_dv4 "
         "FROM ( "
@@ -87,25 +84,23 @@ int main() {
     PQexec(conn, dv_q.c_str());
     std::cout << "\033[1;32mOK\033[0m (" << std::chrono::duration<double, std::milli>(Clock::now() - t3).count() << "ms)\n";
 
-    // --- FASE 4: CALIFICACIÓN DE RANGOS REAL (PV4 + DV4 + Rank thresholds) ---
+    // --- FASE 4: CALIFICACIÓN DE RANGOS REAL (PV4 + DV4) ---
     std::cout << "🎖️  \033[1;37mCalificando Rangos (Cumplimiento de PV4 y Umbrales)... \033[0m";
     auto t5 = Clock::now();
     for (const auto& rule : RULES) {
-        if (rule.id == 1) continue; // Entrepreneur es base
+        if (rule.id == 1) continue;
         std::string rank_q = "UPDATE closing_results SET rank_id = " + std::to_string(rule.id) + 
             " WHERE pv4 >= " + std::to_string(rule.min_pv4) + 
             " AND dv4 >= " + std::to_string(rule.min_dv4) + 
             " AND period_id = 1;";
         PQexec(conn, rank_q.c_str());
     }
-    // Sync a tabla users
     PQexec(conn, "UPDATE users u SET rank_id = cr.rank_id FROM closing_results cr WHERE u.id = cr.user_id AND cr.period_id = 1;");
     std::cout << "\033[1;32mOK\033[0m (" << std::chrono::duration<double, std::milli>(Clock::now() - t5).count() << "ms)\n";
 
-    // --- FASE 5: BONO FAMILIA (6 Niveles con Porcentajes según PDF) ---
+    // --- FASE 5: BONO FAMILIA (6 Niveles) ---
     std::cout << "💰 \033[1;37mCalculando Residual Pro-Lev X (6 Niveles)... \033[0m";
     auto t7 = Clock::now();
-    // P1: Cargar CV por nivel (usando ltree para profundidad exacta)
     for (int lvl = 1; lvl <= 6; lvl++) {
         std::string lvl_q = 
             "UPDATE closing_results cr SET cv_n" + std::to_string(lvl) + " = sub.cv_total "
@@ -119,21 +114,13 @@ int main() {
         PQexec(conn, lvl_q.c_str());
     }
     
-    // P2: Aplicar porcentajes (Ej: Lider X paga 10%, 7%, 6%, 4%, 3%, 2%)
-    // Simplificación para el motor rápido: Promedio ponderado dinámico por nivel
-    PQexec(conn, "UPDATE closing_results SET residual_total = "
-                 "(cv_n1 * 0.10) + (cv_n2 * 0.07) + (cv_n3 * 0.06) + "
-                 "(cv_n4 * 0.04) + (cv_n5 * 0.03) + (cv_n6 * 0.02) "
-                 "WHERE rank_id >= 6;");
-    
-    PQexec(conn, "UPDATE closing_results SET residual_total = "
-                 "(cv_n1 * 0.08) + (cv_n2 * 0.05) + (cv_n3 * 0.04) + (cv_n4 * 0.03) "
-                 "WHERE rank_id < 6 AND rank_id >= 4;"); // Team Builder
+    PQexec(conn, "UPDATE closing_results SET residual_total = (cv_n1 * 0.10) + (cv_n2 * 0.07) + (cv_n3 * 0.06) + (cv_n4 * 0.04) + (cv_n5 * 0.03) + (cv_n6 * 0.02) WHERE rank_id >= 6;");
+    PQexec(conn, "UPDATE closing_results SET residual_total = (cv_n1 * 0.08) + (cv_n2 * 0.05) + (cv_n3 * 0.04) + (cv_n4 * 0.03) WHERE rank_id < 6 AND rank_id >= 4;");
     
     std::cout << "\033[1;32mOK\033[0m (" << std::chrono::duration<double, std::milli>(Clock::now() - t7).count() << "ms)\n";
 
     // --- FASE 6: RESUMEN FINAL ---
-    std::cout << "\n\033[1;35m--- REPORTAJE DE CUMPLIMIENTO FUXION ---\033[0m\n";
+    std::cout << "\n\033[1;35m--- REPORTAJE DE CUMPLIMIENTO FUXION 1M ---\033[0m\n";
     PGresult *res_st = PQexec(conn, "SELECT rank_id, count(*) FROM closing_results GROUP BY rank_id ORDER BY rank_id");
     for (int i = 0; i < PQntuples(res_st); i++) {
         std::cout << " Rango ID " << PQgetvalue(res_st, i, 0) << " : \033[1;33m" << PQgetvalue(res_st, i, 1) << " Calificados \033[0m\n";
